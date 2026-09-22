@@ -51,6 +51,13 @@ export const labEntries: LabEntry[] = [
     detail: "projeto",
   },
   {
+    title: "Atlas MSIT",
+    description:
+      "Inventário de equipamentos de TI com aprovações e assinatura eletrônica.",
+    status: "em-andamento",
+    detail: "projeto",
+  },
+  {
     title: "ETL com Python",
     description: "Extração, transformação e carga sem trabalho manual.",
     status: "concluido",
