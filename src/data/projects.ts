@@ -16,6 +16,13 @@ export const projects: Project[] = [
     status: "em-andamento",
     stack: ["SQL Server", "Python", ".NET"],
   },
+  {
+    title: "Atlas MSIT",
+    description:
+      "Um portal para controlar o parque de equipamentos de TI, da requisição à entrega com termo de responsabilidade assinado.",
+    status: "em-andamento",
+    stack: ["SQL Server", "Python", "Flask"],
+  },
 ];
 
 export const projectStatusLabels: Record<ProjectStatus, string> = {
