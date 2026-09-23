@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.linkedin.com/in/alefcantero">
+  <a href="https://www.linkedin.com/in/alef-cantero-5b9916158/">
     <img src="https://img.shields.io/badge/LinkedIn-0D1117?style=for-the-badge&amp;logo=linkedin&amp;logoColor=00A0FF" alt="LinkedIn" />
   </a>
   &nbsp;
