@@ -1,6 +1,5 @@
-import { Container } from "@/components/ui/container";
-import { PageIntro } from "@/components/ui/page-intro";
-import { ResourceList } from "@/components/resources/resource-list";
+import { PageIntro } from "@/components/lab/page-intro";
+import { LabResourceList } from "@/components/lab/resource-list";
 import { resources } from "@/data/resources";
 import { createPageMetadata } from "@/lib/metadata";
 
@@ -14,15 +13,15 @@ export default function ResourcesPage() {
   return (
     <>
       <PageIntro
-        kicker="Valeu o tempo"
+        label="Valeu o tempo"
         title="Recursos"
-        description="Cursos, livros, ferramentas e referências que foram úteis de verdade — acompanhados do motivo da recomendação."
+        highlight="recomendados"
+        description="Cursos, livros, ferramentas e referências que foram úteis de verdade, com o motivo da recomendação."
       />
-      <section className="listing-section">
-        <Container>
-          <ResourceList resources={resources} />
-        </Container>
+      <section className="sec wrap" aria-label="Recursos">
+        <LabResourceList resources={resources} />
       </section>
+      <div className="foot-gap" />
     </>
   );
 }

@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "CanteroLab — Código, dados e experiências do dia a dia";
+export const alt = "CanteroLab — Banco de dados, cloud e código, investigados a fundo";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -15,8 +15,8 @@ export default function OpenGraphImage() {
           flexDirection: "column",
           justifyContent: "space-between",
           padding: "72px 80px",
-          background: "#070A0F",
-          color: "#F4F7FA",
+          background: "radial-gradient(circle at 85% 10%, rgba(232,121,249,0.28), transparent 45%), radial-gradient(circle at 0% 100%, rgba(34,211,238,0.22), transparent 45%), linear-gradient(135deg, #050816, #0F172A)",
+          color: "#F1F5F9",
           fontFamily: "Arial, sans-serif",
         }}
       >
@@ -25,7 +25,7 @@ export default function OpenGraphImage() {
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
-            borderBottom: "1px solid #1c2732",
+            borderBottom: "1px solid #1C2638",
             paddingBottom: "28px",
           }}
         >
@@ -46,7 +46,7 @@ export default function OpenGraphImage() {
               />
               <path
                 d="M47 52.5h11"
-                stroke="#2F8FFF"
+                stroke="#22D3EE"
                 strokeLinecap="round"
                 strokeWidth="4.5"
               />
@@ -55,7 +55,7 @@ export default function OpenGraphImage() {
               CANTEROLAB
             </span>
           </div>
-          <span style={{ color: "#7f8b97", fontFamily: "monospace", fontSize: 18 }}>
+          <span style={{ color: "#94A3B8", fontFamily: "monospace", fontSize: 18 }}>
             cantero@lab:~
           </span>
         </div>
@@ -63,7 +63,7 @@ export default function OpenGraphImage() {
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 920 }}>
           <span
             style={{
-              color: "#62AEFF",
+              color: "#22D3EE",
               fontFamily: "monospace",
               fontSize: 19,
               marginBottom: 18,
@@ -79,17 +79,17 @@ export default function OpenGraphImage() {
               lineHeight: 1.08,
             }}
           >
-            Código, dados e experiências do dia a dia.
+            Banco de dados, cloud e código, investigados a fundo.
           </span>
         </div>
 
-        <div style={{ display: "flex", gap: 14, color: "#a7b0ba", fontSize: 19 }}>
+        <div style={{ display: "flex", gap: 14, color: "#CBD5E1", fontSize: 19 }}>
           <span>SQL Server</span>
-          <span style={{ color: "#293744" }}>/</span>
+          <span style={{ color: "#334155" }}>/</span>
           <span>Python</span>
-          <span style={{ color: "#293744" }}>/</span>
+          <span style={{ color: "#334155" }}>/</span>
           <span>C#</span>
-          <span style={{ color: "#293744" }}>/</span>
+          <span style={{ color: "#334155" }}>/</span>
           <span>.NET</span>
         </div>
       </div>

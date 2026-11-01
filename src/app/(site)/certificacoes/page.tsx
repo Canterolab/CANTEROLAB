@@ -1,8 +1,9 @@
 import Image from "next/image";
 
-import { ResourceList } from "@/components/resources/resource-list";
-import { Container } from "@/components/ui/container";
-import { PageIntro } from "@/components/ui/page-intro";
+import { ArrowIcon } from "@/components/lab/icons";
+import { PageIntro } from "@/components/lab/page-intro";
+import { LabResourceList } from "@/components/lab/resource-list";
+import { SectionHead } from "@/components/lab/section-head";
 import { resources } from "@/data/resources";
 import { getAllCertifications } from "@/lib/certifications";
 import { createPageMetadata } from "@/lib/metadata";
@@ -10,10 +11,14 @@ import { formatDate } from "@/lib/utils";
 
 export const metadata = createPageMetadata({
   title: "Certificações",
-  description:
-    "Certificações, cursos e trilhas de estudo recomendadas por Alef Cantero.",
+  description: "Certificações, cursos e trilhas de estudo de Alef Cantero.",
   path: "/certificacoes",
 });
+
+const inProgress = [
+  { title: "DP-300", detail: "Azure Database Administrator Associate" },
+  { title: "DP-900", detail: "Azure Data Fundamentals" },
+];
 
 export default function CertificationsPage() {
   const certifications = getAllCertifications();
@@ -21,81 +26,66 @@ export default function CertificationsPage() {
   return (
     <>
       <PageIntro
-        kicker="Aprendizado validado"
+        label="Aprendizado validado"
         title="Certificações"
-        description="Credenciais organizadas com contexto — o que cobrem, quando foram concluídas e onde verificar."
+        highlight="e trilhas"
+        description="Credenciais com contexto: o que cobrem, quando foram concluídas e onde verificar."
       />
-      <section className="listing-section certifications-section">
-        <Container>
-          {certifications.length > 0 ? (
-            <div className="content-list">
-              {certifications.map((certification) => (
-                <article className="content-list-item" key={certification.id}>
-                  <div className="certification-summary">
-                    {certification.imagePath ? (
-                      <Image
-                        className="certification-badge"
-                        src={certification.imagePath}
-                        alt={`Selo: ${certification.title}`}
-                        width={64}
-                        height={64}
-                      />
+      <section className="sec wrap" aria-labelledby="em-preparacao">
+        <SectionHead id="em-preparacao" title="Em preparação" />
+        <div className="certs certs--wide">
+          {inProgress.map((cert) => (
+            <div className="cert on" key={cert.title}>
+              <span className="cl-label cl-label--accent">Em preparação</span>
+              <b>{cert.title}</b>
+              <span>{cert.detail}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+      <section className="sec wrap" aria-labelledby="concluidas">
+        <SectionHead id="concluidas" title="Concluídas" />
+        {certifications.length ? (
+          <div className="grid-2">
+            {certifications.map((cert) => (
+              <article className="res cert-item" key={cert.id}>
+                {cert.imagePath ? (
+                  <Image
+                    className="cert-badge"
+                    src={cert.imagePath}
+                    alt={`Selo: ${cert.title}`}
+                    width={64}
+                    height={64}
+                  />
+                ) : null}
+                <div>
+                  <span className="cl-label cl-label--accent">{cert.issuer}</span>
+                  <h2>{cert.title}</h2>
+                  {cert.description ? <p>{cert.description}</p> : null}
+                  <div className="res__foot">
+                    <span className="cl-meta">
+                      <time dateTime={cert.date}>{formatDate(cert.date)}</time>
+                      {cert.credentialId ? ` · ID ${cert.credentialId}` : null}
+                    </span>
+                    {cert.credentialUrl ? (
+                      <a className="cl-btn cl-btn--link" href={cert.credentialUrl} target="_blank" rel="noreferrer">
+                        Ver credencial <ArrowIcon />
+                      </a>
                     ) : null}
-                    <div>
-                      <p className="eyebrow">{certification.issuer}</p>
-                      <h2>{certification.title}</h2>
-                      <p>{certification.description}</p>
-                      <span className="content-list-meta">
-                        <time dateTime={certification.date}>
-                          {formatDate(certification.date)}
-                        </time>
-                        {certification.credentialId
-                          ? ` · ID ${certification.credentialId}`
-                          : null}
-                      </span>
-                    </div>
                   </div>
-                  {certification.credentialUrl ? (
-                    <a
-                      className="button button-secondary"
-                      href={certification.credentialUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Ver credencial
-                    </a>
-                  ) : null}
-                </article>
-              ))}
-            </div>
-          ) : (
-            <div className="editorial-empty">
-              <span aria-hidden="true">certs[]</span>
-              <h2>Organizando as credenciais por aqui.</h2>
-              <p>
-                Esta área já está preparada para receber certificações, sem
-                preencher o espaço com dados de exemplo.
-              </p>
-            </div>
-          )}
-        </Container>
-      </section>
-
-      <section className="study-recommendations-section">
-        <Container>
-          <div className="study-recommendations-heading">
-            <div>
-              <p className="page-kicker">Para continuar aprendendo</p>
-              <h2>Cursos e estudos recomendados</h2>
-            </div>
-            <p>
-              Uma seleção de trilhas e materiais para aprofundar os temas que
-              aparecem por aqui, do fundamento à aplicação prática.
-            </p>
+                </div>
+              </article>
+            ))}
           </div>
-          <ResourceList headingLevel={3} resources={resources} />
-        </Container>
+        ) : (
+          <p className="cl-empty">As credenciais entram aqui assim que forem cadastradas.</p>
+        )}
       </section>
+      <section className="sec wrap" aria-labelledby="estudos">
+        <SectionHead id="estudos" title="Cursos e estudos recomendados" href="/recursos" linkLabel="Todos os recursos" />
+        <LabResourceList resources={resources.slice(0, 4)} headingLevel={3} />
+      </section>
+      <div className="foot-gap" />
     </>
   );
 }

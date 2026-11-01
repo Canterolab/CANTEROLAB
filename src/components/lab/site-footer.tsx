@@ -34,6 +34,9 @@ export function SiteFooter({ editorias }: { editorias: NavItem[] }) {
           <h2 className="cl-label">O Lab</h2>
           <ul>
             <li>
+              <Link href="/lab">Bancada do Lab</Link>
+            </li>
+            <li>
               <Link href="/sobre">Sobre</Link>
             </li>
             <li>
@@ -43,7 +46,7 @@ export function SiteFooter({ editorias }: { editorias: NavItem[] }) {
               <Link href="/certificacoes">Certificações</Link>
             </li>
             <li>
-              <a href={links.email}>Contato</a>
+              <Link href="/contato">Contato</Link>
             </li>
           </ul>
         </div>
@@ -71,9 +74,9 @@ export function SiteFooter({ editorias }: { editorias: NavItem[] }) {
         <span className="cl-meta">
           © {year} {siteConfig.shortName} · {siteConfig.author}
         </span>
-        <a className="cl-meta" href={links.email}>
+        <Link className="cl-meta" href="/contato">
           Aberto a trocas e colaborações → vamos conversar
-        </a>
+        </Link>
       </div>
     </footer>
   );

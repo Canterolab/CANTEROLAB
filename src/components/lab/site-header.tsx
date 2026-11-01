@@ -22,6 +22,8 @@ const pagesNav: NavItem[] = [
   { label: "Projetos do Lab", href: "/projetos" },
   { label: "Certificações", href: "/certificacoes" },
   { label: "Recursos", href: "/recursos" },
+  { label: "Bancada do Lab", href: "/lab" },
+  { label: "Contato", href: "/contato" },
 ];
 
 const normalize = (value: string) =>

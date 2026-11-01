@@ -1,209 +1,193 @@
 import Image from "next/image";
 import Link from "next/link";
 
-import { Container } from "@/components/ui/container";
-import {
-  ArrowRightIcon,
-  GithubIcon,
-  InstagramIcon,
-  LinkedinIcon,
-} from "@/components/ui/icons";
-import { PageIntro } from "@/components/ui/page-intro";
+import { GithubIcon, LinkedinIcon } from "@/components/lab/icons";
+import { LabProjectCard } from "@/components/lab/project-card";
 import { siteConfig } from "@/config/site";
+import { projects } from "@/data/projects";
+import { getAllCertifications } from "@/lib/certifications";
 import { createPageMetadata } from "@/lib/metadata";
+import { absoluteUrl } from "@/lib/seo";
 
 export const metadata = createPageMetadata({
-  title: "Sobre Alef Cantero",
+  title: "Sobre Alef Cantero e o Lab",
   description:
-    "Conheça Alef Cantero, autor do CanteroLab, e o propósito por trás deste blog técnico.",
+    "Quem escreve o CanteroLab: Tech Lead em ERP/PDV para varejo, com 8+ anos de SQL Server, estudando Azure SQL, Python e C#.",
   path: "/sobre",
 });
 
-const purposeItems = [
+const areas = [
   {
-    index: "01",
-    title: "O motivo",
-    description:
-      "Na rotina com tecnologia, muita coisa só fica clara depois de testar, errar e corrigir. Criei o blog para não deixar esses aprendizados se perderem quando uma tarefa termina.",
+    title: "SQL Server",
+    text: "Performance, Query Store, índices, planos de execução e troubleshooting em ambientes de ERP de varejo.",
   },
   {
-    index: "02",
-    title: "O objetivo",
-    description:
-      "Construir um acervo prático e em constante evolução, explicando o contexto, as decisões e o caminho até uma solução que outras pessoas também possam aplicar.",
+    title: "Azure SQL",
+    text: "Migração e operação de bancos na nuvem; foco atual dos estudos para a DP-300.",
   },
   {
-    index: "03",
-    title: "O compromisso",
-    description:
-      "Compartilhar conteúdo direto, honesto e fácil de entender — incluindo os testes que falharam e os detalhes que fizeram a diferença no resultado final.",
+    title: "Python",
+    text: "Automação de rotinas, ETL de planilhas e integrações com o banco.",
+  },
+  {
+    title: "C# / .NET",
+    text: "APIs com ASP.NET Core, Dapper e Entity Framework Core.",
   },
 ];
 
-const topics = [
-  "SQL Server",
-  "Banco de dados",
-  "Python",
-  "C# e .NET",
-  "Automação",
-  "Projetos reais",
-];
-
-const socialLinks = [
-  {
-    label: "GitHub",
-    href: siteConfig.links.github ?? "https://github.com/DBCantero",
-    icon: <GithubIcon />,
-  },
-  {
-    label: "LinkedIn",
-    href:
-      siteConfig.links.linkedin ??
-      "https://www.linkedin.com/in/alef-cantero-5b9916158",
-    icon: <LinkedinIcon />,
-  },
-  {
-    label: "Instagram",
-    href: siteConfig.links.instagram ?? "https://www.instagram.com/alefcantero",
-    icon: <InstagramIcon />,
-  },
+const inProgress = [
+  { title: "DP-300", detail: "Azure Database Administrator Associate" },
+  { title: "DP-900", detail: "Azure Data Fundamentals" },
 ];
 
 export default function AboutPage() {
+  const certifications = getAllCertifications();
+  const { links } = siteConfig;
+  const person = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: siteConfig.author,
+    jobTitle: "Tech Lead",
+    worksFor: { "@type": "Organization", name: "Linx Sistemas" },
+    image: absoluteUrl(siteConfig.authorPhoto),
+    url: absoluteUrl("/sobre"),
+    sameAs: [links.github, links.linkedin].filter(Boolean),
+    knowsAbout: ["SQL Server", "Azure SQL", "T-SQL", "Python", "C#", ".NET"],
+  }).replace(/</g, "\\u003c");
+
   return (
     <>
-      <PageIntro
-        kicker="$ whoami"
-        title="Olá, eu sou Alef Cantero."
-        description="Desenvolvedor de Backend & Dados, com foco em SQL Server, C# (.NET) e Python. Criei o CanteroLab para transformar aprendizados do dia a dia em conteúdo útil, direto e fácil de aplicar."
-      />
-
-      <section className="about-section" aria-labelledby="about-story-heading">
-        <Container className="about-profile">
-          <figure className="about-author-card">
-            <div className="about-portrait-frame">
-              <Image
-                className="about-portrait"
-                src="/images/authors/alef-cantero.webp"
-                alt="Retrato de Alef Cantero"
-                width={460}
-                height={460}
-                sizes="(max-width: 345px) 200px, (max-width: 414px) 58vw, 240px"
-              />
-            </div>
-            <figcaption className="about-author-caption">
-              <span>Autor do CanteroLab</span>
-              <strong>Alef Cantero</strong>
-              <p>Backend, dados e desenvolvimento.</p>
-              <nav className="about-socials" aria-label="Redes sociais de Alef Cantero">
-                {socialLinks.map((item) =>
-                  item.href ? (
-                    <a
-                      key={item.label}
-                      href={item.href}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${item.label} de Alef Cantero — abre em nova aba`}
-                    >
-                      {item.icon}
-                    </a>
-                  ) : (
-                    <span
-                      className="is-unconfigured"
-                      key={item.label}
-                      role="img"
-                      aria-label={item.label}
-                    >
-                      {item.icon}
-                    </span>
-                  ),
-                )}
-              </nav>
-            </figcaption>
-          </figure>
-
-          <div className="about-story">
-            <p className="page-kicker">Por trás do laboratório</p>
-            <h2 id="about-story-heading">
-              Gosto de entender como as coisas funcionam — e de registrar o
-              caminho até a solução.
-            </h2>
-            <p>
-              Meu trabalho e meus estudos passam por banco de dados,
-              desenvolvimento e automação. No dia a dia, investigo problemas,
-              testo hipóteses, construo projetos e aprendo com aquilo que não
-              funciona de primeira.
-            </p>
-            <p>
-              O CanteroLab é o lugar onde organizo esse processo e compartilho
-              o que aprendo. A ideia não é mostrar apenas a resposta pronta,
-              mas também o raciocínio, os erros e as escolhas que levaram até
-              ela.
-            </p>
-            <p className="about-statement">
-              Aprender, construir, testar, corrigir e compartilhar.
-            </p>
-          </div>
-        </Container>
-      </section>
-
-      <section className="about-purpose" aria-labelledby="about-purpose-heading">
-        <Container>
-          <header className="about-section-heading">
-            <div>
-              <p className="page-kicker">Por que o blog existe</p>
-              <h2 id="about-purpose-heading">
-                Conhecimento fica mais útil quando pode ser compartilhado.
-              </h2>
-            </div>
-            <p>
-              O CanteroLab nasceu como um caderno de trabalho aberto: um espaço
-              para documentar experiências reais e transformá-las em referência
-              para consultas futuras.
-            </p>
-          </header>
-
-          <div className="about-purpose-grid">
-            {purposeItems.map((item) => (
-              <article className="about-purpose-card" key={item.index}>
-                <span aria-hidden="true">{item.index}</span>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      <section className="about-topics" aria-labelledby="about-topics-heading">
-        <Container className="about-topics-layout">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: person }} />
+      <div className="wrap">
+        <section className="s-intro" aria-labelledby="sobre-titulo">
           <div>
-            <p className="page-kicker">O que você encontra aqui</p>
-            <h2 id="about-topics-heading">
-              Conteúdo técnico com contexto e aplicação prática.
-            </h2>
-            <p>
-              O foco está nas tecnologias que fazem parte dos meus estudos e
-              projetos, sempre com espaço para novas descobertas pelo caminho.
+            <span className="cl-label cl-label--accent cl-rise">{"// Sobre · O Lab"}</span>
+            <h1 id="sobre-titulo" className="cl-rise d1">
+              Um laboratório de estudos sobre{" "}
+              <span className="grad-text">dados, cloud e automação.</span>
+            </h1>
+            <p className="a-lede cl-rise d2" style={{ margin: 0 }}>
+              Sou {siteConfig.author}. Escrevo o CanteroLab para registrar, com contexto e
+              evidência, o que aprendo resolvendo problemas reais de banco de dados.
             </p>
-            <Link className="button button-primary" href="/artigos">
-              Explorar os artigos
-              <ArrowRightIcon />
-            </Link>
           </div>
+          <div className="s-photo cl-rise d2">
+            <Image
+              src={siteConfig.authorPhoto}
+              alt={`Foto de ${siteConfig.author}`}
+              width={460}
+              height={460}
+              sizes="(max-width: 760px) 200px, 400px"
+              priority
+            />
+          </div>
+        </section>
 
-          <ul className="about-topic-list" aria-label="Assuntos do CanteroLab">
-            {topics.map((topic, index) => (
-              <li key={topic}>
-                <span aria-hidden="true">
-                  {String(index + 1).padStart(2, "0")}
-                </span>
-                {topic}
-              </li>
+        <section className="s-cols" aria-labelledby="trajetoria">
+          <h2 id="trajetoria">Trajetória</h2>
+          <div className="prose">
+            <p>
+              Há mais de oito anos trabalho com SQL Server, quase sempre dentro de ERPs de
+              varejo: bancos grandes, muitas lojas, operação que não pode parar. Hoje sou Tech
+              Lead na Linx Sistemas e lidero um time de suporte. É dessa rotina que vem a
+              maioria das perguntas que viram artigo aqui.
+            </p>
+            <p>
+              A base técnica veio da formação em SQL Server na Impacta, com o Prof. Landry
+              Duailibe. Depois vieram Python para automatizar o que era manual, C# e .NET para
+              construir ferramentas internas e, agora, Azure SQL e IA aplicada ao
+              desenvolvimento.
+            </p>
+            <p>
+              Na rotina com tecnologia, muita coisa só fica clara depois de testar, errar e
+              corrigir. Criei o Lab para não deixar esses aprendizados se perderem quando uma
+              tarefa termina, incluindo os testes que falharam e os detalhes que fizeram
+              diferença no resultado.
+            </p>
+          </div>
+        </section>
+
+        <section className="s-cols" aria-labelledby="areas">
+          <h2 id="areas">Áreas de domínio</h2>
+          <div className="areas">
+            {areas.map((area) => (
+              <div className="area" key={area.title}>
+                <h3>{area.title}</h3>
+                <p>{area.text}</p>
+              </div>
             ))}
-          </ul>
-        </Container>
-      </section>
+          </div>
+        </section>
+
+        <section className="s-cols" aria-labelledby="certificacoes">
+          <h2 id="certificacoes">Certificações</h2>
+          <div>
+            <div className="certs">
+              {inProgress.map((cert) => (
+                <div className="cert on" key={cert.title}>
+                  <span className="cl-label cl-label--accent">Em preparação</span>
+                  <b>{cert.title}</b>
+                  <span>{cert.detail}</span>
+                </div>
+              ))}
+              {certifications.map((cert) => (
+                <div className="cert" key={cert.id}>
+                  <span className="cl-label">Concluída</span>
+                  <b>{cert.title}</b>
+                  <span>
+                    {cert.issuer} · {cert.date.slice(0, 4)}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <p style={{ margin: "16px 0 0" }}>
+              <Link className="cl-btn cl-btn--link" href="/certificacoes">
+                Ver credenciais →
+              </Link>
+            </p>
+          </div>
+        </section>
+
+        <section className="s-cols" aria-labelledby="projetos">
+          <h2 id="projetos">Projetos do Lab</h2>
+          <div>
+            <p className="s-note">
+              Experimentos e estudos de caso do laboratório: o problema e a abordagem de cada um.
+            </p>
+            <div className="grid-2">
+              {projects.map((project) => (
+                <LabProjectCard key={project.slug} project={project} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="closing" aria-labelledby="conversar">
+          <div>
+            <span className="cl-label">Aberto a trocas e colaborações</span>
+            <h2 id="conversar">Quer conversar sobre dados, automação ou um projeto?</h2>
+            <p>Respondo mensagens pelo formulário de contato, por e-mail e pelo LinkedIn.</p>
+          </div>
+          <div className="links">
+            <Link className="cl-btn cl-btn--primary" href="/contato">
+              Vamos conversar?
+            </Link>
+            {links.linkedin ? (
+              <a className="cl-btn cl-btn--secondary" href={links.linkedin} target="_blank" rel="noreferrer">
+                <LinkedinIcon />
+                LinkedIn
+              </a>
+            ) : null}
+            {links.github ? (
+              <a className="cl-btn cl-btn--secondary" href={links.github} target="_blank" rel="noreferrer">
+                <GithubIcon />
+                GitHub
+              </a>
+            ) : null}
+          </div>
+        </section>
+      </div>
+      <div className="foot-gap" />
     </>
   );
 }

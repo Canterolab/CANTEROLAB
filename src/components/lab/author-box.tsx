@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { ArrowIcon, GithubIcon, LinkedinIcon } from "@/components/lab/icons";
 import { siteConfig } from "@/config/site";
@@ -41,9 +42,9 @@ export function AuthorBox() {
               LinkedIn
             </a>
           ) : null}
-          <a className="talk" href={`${links.email}?subject=${encodeURIComponent("Vamos conversar?")}`}>
+          <Link className="talk" href="/contato">
             Vamos conversar? <ArrowIcon />
-          </a>
+          </Link>
         </div>
       </div>
     </aside>
