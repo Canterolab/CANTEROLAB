@@ -1,19 +1,24 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 
-import { ArticleCard } from "@/components/articles/article-card";
-import { Container } from "@/components/ui/container";
-import { TechnologyLogo } from "@/components/ui/technology-logo";
+import Image from "next/image";
+
+import { ArticleCard } from "@/components/lab/article-card";
+import { ArticleToc } from "@/components/lab/article-toc";
+import { AuthorBox } from "@/components/lab/author-box";
+import { EditorialTag } from "@/components/lab/editorial-tag";
+import { ReadingProgress } from "@/components/lab/reading-progress";
+import { SectionHead } from "@/components/lab/section-head";
 import {
-  getAdjacentArticles,
   getAllArticles,
   getArticle,
   getRelatedArticles,
   loadArticle,
 } from "@/lib/articles";
 import { siteConfig } from "@/config/site";
+import { getCover, getOgImage } from "@/lib/covers";
 import { absoluteUrl } from "@/lib/seo";
+import { getArticleToc } from "@/lib/toc";
 import { formatDate } from "@/lib/utils";
 
 type ArticlePageProps = {
@@ -37,7 +42,7 @@ export async function generateMetadata({
 
   if (!article) return {};
 
-  const image = article.image ?? "/opengraph-image";
+  const image = article.image ?? getOgImage(article) ?? "/opengraph-image";
 
   return {
     title: article.title,
@@ -70,8 +75,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   if (!loadedArticle) notFound();
 
   const { article, Content } = loadedArticle;
-  const { previous, next } = getAdjacentArticles(article);
-  const related = getRelatedArticles(article);
+  const related = getRelatedArticles(article, 3);
+  const toc = getArticleToc(article);
+  const cover = getCover(article);
+  const ogImage = article.image ?? getOgImage(article) ?? "/opengraph-image";
   const structuredData = JSON.stringify({
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -79,11 +86,19 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
     description: article.description,
     datePublished: article.date,
     dateModified: article.updated ?? article.date,
-    author: { "@type": "Person", name: siteConfig.author },
+    author: {
+      "@type": "Person",
+      name: siteConfig.author,
+      url: absoluteUrl("/sobre"),
+      image: absoluteUrl(siteConfig.authorPhoto),
+      sameAs: [siteConfig.links.github, siteConfig.links.linkedin].filter(Boolean),
+      jobTitle: "Tech Lead",
+    },
     mainEntityOfPage: absoluteUrl(article.href),
     url: absoluteUrl(article.href),
-    image: absoluteUrl(article.image ?? "/opengraph-image"),
+    image: absoluteUrl(ogImage),
     inLanguage: "pt-BR",
+    articleSection: article.category,
     keywords: article.tags.join(", "),
   }).replace(/</g, "\\u003c");
 
@@ -93,80 +108,82 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: structuredData }}
       />
-      <article className="article-page">
-        <Container>
-          <header className="article-header">
-            <div
-              className={`article-header-context article-header-context-${article.categorySlug}`}
-            >
-              <span className="article-header-logo" aria-hidden="true">
-                <TechnologyLogo slug={article.categorySlug} />
-              </span>
-              <div>
-                <p className="article-header-category">{article.category}</p>
-                <nav className="breadcrumbs" aria-label="Navegação estrutural">
-                  <Link href="/artigos">Artigos</Link>
-                  <span aria-hidden="true">/</span>
-                  <Link href={`/artigos/${article.categorySlug}`}>
-                    {article.category}
-                  </Link>
-                </nav>
-              </div>
-            </div>
-            <h1>{article.title}</h1>
-            <p className="article-deck">{article.description}</p>
-            <div className="article-byline">
-              <span>Por {siteConfig.author}</span>
+      <ReadingProgress targetId="artigo" />
+      <div className="wrap">
+        <header className="a-head">
+          <div className="a-crumb">
+            <EditorialTag
+              label={article.category}
+              categorySlug={article.categorySlug}
+              href={`/artigos/${article.categorySlug}`}
+            />
+            {article.tags[0] ? <span className="cl-label">/ {article.tags[0]}</span> : null}
+          </div>
+          <h1 className="a-title" id="titulo-artigo">{article.title}</h1>
+          <p className="a-lede">{article.description}</p>
+          <div className="a-by">
+            <Image src={siteConfig.authorPhoto} alt="" width={36} height={36} sizes="36px" />
+            <b>{siteConfig.author}</b>
+            <div className="cl-meta">
               <time dateTime={article.date}>{formatDate(article.date)}</time>
+              {article.updated ? (
+                <>
+                  <span className="sep" aria-hidden="true">·</span>
+                  <span>
+                    atualizado <time dateTime={article.updated}>{formatDate(article.updated)}</time>
+                  </span>
+                </>
+              ) : null}
+              <span className="sep" aria-hidden="true">·</span>
               <span>{article.readingTime} de leitura</span>
             </div>
-            <ul className="tag-list" aria-label="Tags">
-              {article.tags.map((tag) => (
-                <li key={tag}>{tag}</li>
-              ))}
-            </ul>
-          </header>
-
-          <div className="article-content">
-            <Content />
           </div>
+        </header>
 
-          <nav className="article-pagination" aria-label="Artigos anterior e seguinte">
-            {previous ? (
-              <Link href={previous.href}>
-                <span>← Artigo anterior</span>
-                <strong>{previous.title}</strong>
-              </Link>
-            ) : (
-              <span />
-            )}
-            {next ? (
-              <Link href={next.href}>
-                <span>Próximo artigo →</span>
-                <strong>{next.title}</strong>
-              </Link>
-            ) : null}
-          </nav>
-        </Container>
-      </article>
+        {cover ? (
+          <figure className="a-cover">
+            <picture>
+              <source type="image/avif" srcSet={cover.avif} />
+              <source type="image/webp" srcSet={cover.webp} />
+              {/* Capa já otimizada em AVIF/WebP @1x/@2x. */}
+              <img src={cover.fallback} alt="" width={1200} height={630} fetchPriority="high" />
+            </picture>
+          </figure>
+        ) : null}
 
-      {related.length > 0 ? (
-        <section className="related-section" aria-labelledby="related-heading">
-          <Container>
-            <p className="eyebrow">Continue explorando</p>
-            <h2 id="related-heading">Artigos relacionados</h2>
-            <div className="listing-grid related-grid">
-              {related.map((item) => (
-                <ArticleCard
-                  article={item}
-                  headingLevel={3}
-                  key={item.href}
-                />
+        <div className="a-grid">
+          <ArticleToc items={toc} />
+          <article id="artigo" aria-labelledby="titulo-artigo">
+            <div className="prose">
+              <Content />
+            </div>
+            <div className="a-tags">
+              <span className="cl-label">Tópicos</span>
+              {article.tags.map((tag) => (
+                <EditorialTag key={tag} label={tag} variant="topic" />
               ))}
             </div>
-          </Container>
+            <AuthorBox />
+          </article>
+        </div>
+      </div>
+
+      {related.length ? (
+        <section className="sec wrap" aria-labelledby="continue">
+          <SectionHead
+            id="continue"
+            title="Continue no Lab"
+            href={`/artigos/${article.categorySlug}`}
+            linkLabel={`Mais de ${article.category}`}
+          />
+          <div className="grid-3">
+            {related.map((item) => (
+              <ArticleCard key={item.href} article={item} showDescription={false} />
+            ))}
+          </div>
         </section>
       ) : null}
+      <div className="foot-gap" />
     </>
   );
 }

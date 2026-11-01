@@ -1,0 +1,89 @@
+/* CanteroLab v2 — tokens gerados a partir do design system (project/tokens.json). Tema padrão: escuro. */
+:root,[data-theme="dark"]{
+  --paper:#050816;
+  --paper-2:#0f172a;
+  --surface:#0d1426;
+  --sunken:#0a1020;
+  --ink:#f1f5f9;
+  --ink-2:#cbd5e1;
+  --ink-3:#94a3b8;
+  --line:#1c2638;
+  --rule:var(--line);
+  --grad-1:#22d3ee;
+  --grad-2:#818cf8;
+  --grad-3:#e879f9;
+  --accent:#38bdf8;
+  --accent-ink:#050816;
+  --accent-soft:#12203a;
+  --focus:var(--accent);
+  --node:#3b82f6;
+  --code-bg:#030611;
+  --code-ink:#e2e8f0;
+  --code-muted:#7c8aa5;
+  --code-keyword:#f472b6;
+  --code-string:#5eead4;
+  --code-number:#fbbf24;
+  --code-function:#7dd3fc;
+  --ed-sqlserver:#fb7185;
+  --ed-azure:#38bdf8;
+  --ed-python:#4ade80;
+  --ed-csharp:#c084fc;
+  --ed-carreira:#fbbf24;
+  --shadow-card:0 1px 0 rgba(255, 255, 255, 0.04) inset, 0 20px 40px -24px rgba(0, 0, 0, 0.6);
+  --shadow-glow:0 0 0 1px rgba(56, 189, 248, 0.45), 0 18px 48px -12px rgba(129, 140, 248, 0.45)
+}
+
+[data-theme="light"]{
+  --paper:#f7f8fc;
+  --paper-2:#eef1f8;
+  --surface:#ffffff;
+  --sunken:#eef1f8;
+  --ink:#0b1020;
+  --ink-2:#334155;
+  --ink-3:#5b6478;
+  --line:#dfe3ee;
+  --rule:var(--line);
+  --grad-1:#0e7490;
+  --grad-2:#4f46e5;
+  --grad-3:#a21caf;
+  --accent:#4f46e5;
+  --accent-ink:#ffffff;
+  --accent-soft:#e8eaff;
+  --focus:var(--accent);
+  --node:#6366f1;
+  --code-bg:#0b1020;
+  --ed-sqlserver:#be123c;
+  --ed-azure:#0369a1;
+  --ed-python:#15803d;
+  --ed-csharp:#7e22ce;
+  --ed-carreira:#b45309;
+  --shadow-card:0 1px 2px rgba(11, 16, 32, 0.04), 0 16px 32px -20px rgba(11, 16, 32, 0.18);
+  --shadow-glow:0 0 0 1px rgba(79, 70, 229, 0.35), 0 18px 40px -16px rgba(79, 70, 229, 0.35)
+}
+
+:root{
+  --space-1:4px;
+  --space-2:8px;
+  --space-3:12px;
+  --space-4:16px;
+  --space-5:24px;
+  --space-6:32px;
+  --space-7:48px;
+  --space-8:64px;
+  --space-9:96px;
+  --space-10:128px;
+  --radius-sm:6px;
+  --radius-md:10px;
+  --radius-lg:16px;
+  --radius-full:999px;
+  --container:1200px;
+  --columns:12;
+  --gutter:24px;
+  --margin-mobile:20px;
+  --measure:68ch;
+  --header-height:68px;
+  --font-display:"Space Grotesk Variable", "Space Grotesk", system-ui, sans-serif;
+  --font-sans:"Inter Variable", Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono:"JetBrains Mono Variable", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace
+}
+

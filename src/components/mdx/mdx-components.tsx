@@ -1,6 +1,8 @@
 import type { ComponentPropsWithoutRef, ReactNode } from "react";
 import type { MDXComponents } from "mdx/types";
 
+import { CodeBlock } from "@/components/lab/code-block";
+
 export function Callout({
   title = "Nota",
   children,
@@ -9,8 +11,8 @@ export function Callout({
   children: ReactNode;
 }) {
   return (
-    <aside className="mdx-callout">
-      <strong>{title}</strong>
+    <aside className="callout">
+      <span className="cl-label">{title}</span>
       <div>{children}</div>
     </aside>
   );
@@ -31,5 +33,6 @@ function MdxLink({ href = "", ...props }: ComponentPropsWithoutRef<"a">) {
 
 export const articleMdxComponents: MDXComponents = {
   a: MdxLink,
+  pre: CodeBlock,
   Callout,
 };

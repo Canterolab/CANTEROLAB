@@ -2,8 +2,10 @@ import { z } from "zod";
 
 export const ARTICLE_CATEGORIES = [
   { slug: "sql-server", label: "SQL Server" },
+  { slug: "azure", label: "Azure" },
   { slug: "python", label: "Python" },
   { slug: "csharp", label: "C#" },
+  { slug: "carreira", label: "Carreira" },
 ] as const;
 
 export type ArticleCategorySlug = (typeof ARTICLE_CATEGORIES)[number]["slug"];
@@ -24,8 +26,10 @@ export const articleSlugSchema = z
 
 export const articleCategorySlugSchema = z.enum([
   "sql-server",
+  "azure",
   "python",
   "csharp",
+  "carreira",
 ]);
 
 function isRealIsoDate(value: string) {

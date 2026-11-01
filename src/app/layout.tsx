@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
+import { themeScript } from "@/components/lab/theme-script";
 import { siteConfig } from "@/config/site";
 
 import "./globals.css";
@@ -46,7 +47,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" data-theme="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className={GeistSans.variable}>{children}</body>
     </html>
   );
